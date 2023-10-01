@@ -1,5 +1,7 @@
 from django.db import models
 
+from users.models import User
+
 NULLABLE = {'null': True, 'blank': True}
 
 
@@ -8,6 +10,8 @@ class Client(models.Model):
     last_name = models.CharField(max_length=100, verbose_name='Фамилия')
     email = models.CharField(max_length=100, verbose_name='Почта')
     comment = models.TextField(verbose_name='Комментарий', **NULLABLE)
+
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Пользователь', **NULLABLE)
 
     def __str__(self):
         return f'{self.first_name} {self.last_name} ({self.email})'
@@ -20,6 +24,8 @@ class Client(models.Model):
 class MailingMessage(models.Model):
     subject = models.CharField(max_length=200, **NULLABLE, verbose_name='Тема')
     message = models.TextField(verbose_name='Тело')
+
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Пользователь', **NULLABLE)
 
     def __str__(self):
         return f'{self.subject}'
@@ -57,6 +63,8 @@ class MailingSettings(models.Model):
 
     clients = models.ManyToManyField(Client, verbose_name='Клиенты')
     message = models.ForeignKey(MailingMessage, on_delete=models.CASCADE, verbose_name='Сообщение', **NULLABLE)
+
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Пользователь', **NULLABLE)
 
     def __str__(self):
         return f'{self.start_time} - {self.end_time} / {self.period} / {self.status}'
