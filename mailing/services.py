@@ -31,7 +31,7 @@ def send_email(mailing_settings, mailing_client):
 
     MailingLog.objects.create(
         status=status,
-        mailing_settings=mailing_settings,
+        settings=mailing_settings,
         client_id=mailing_client.pk,
         server_response=server_response
     )
@@ -44,8 +44,12 @@ def send_mails():
     # получаем список всех созданных и запущенных рассылок
     for mailing_settings in MailingSettings.objects.exclude(status=MailingSettings.DONE):
 
+        # проверяем дату окончания у рассылки для выставления статуса "Завершена"
+        if datetime_now > mailing_settings.end_time:
+            mailing_settings.status = MailingSettings.DONE
+
         # проверяем дату начала рассылки для выставления статуса "Запущена"
-        if datetime_now >= mailing_settings.start_time:
+        elif datetime_now >= mailing_settings.start_time:
             mailing_settings.status = MailingSettings.STARTED
 
             # проходимся по каждому клиенту рассылки
@@ -54,7 +58,7 @@ def send_mails():
                 # получаем лог текущего пользователя и текущей рассылки
                 mailing_log = MailingLog.objects.filter(
                     client=mailing_client,
-                    mailing_settings=mailing_settings
+                    settings=mailing_settings
                 )
 
                 # если существуют логи с текущими клиентом и рассылкой
@@ -75,9 +79,5 @@ def send_mails():
                             send_email(mailing_settings, mailing_client)
                 else:
                     send_email(mailing_settings, mailing_client)
-
-        # проверяем дату окончания у рассылки для выставления статуса "Завершена"
-        elif datetime_now > mailing_settings.end_time:
-            mailing_settings.status = MailingSettings.DONE
 
         mailing_settings.save()
