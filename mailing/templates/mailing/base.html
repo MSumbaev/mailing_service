@@ -1,5 +1,5 @@
-{% load static %}
 <!doctype html>
+{% load static %}
 <html lang="en">
 <head>
     <meta charset="utf-8">
@@ -30,8 +30,15 @@
                         <li><a href="{% url 'mailing:client_list' %}" class="text-white">Клиенты</a></li>
                         <li><a href="{% url 'mailing:message_list' %}" class="text-white">Сообщения</a></li>
                         <li><a href="{% url 'mailing:mailing_list' %}" class="text-white">Рассылки</a></li>
-                        <li><a href="#" class="text-white">Like on Facebook</a></li>
-                        <li><a href="#" class="text-white">Email me</a></li>
+                        {% if user.is_authenticated %}
+                            <li><a class="text-white" href="{% url 'users:profile' %}">Профиль</a></li>
+                            <li><a class="text-danger" href="{% url 'users:logout' %}">Выход</a></li>
+                        {% else %}
+                            <li><a class="text-success" href="{% url 'users:login' %}">Вход</a></li>
+                            <li><a class="text-success" href="{% url 'users:register' %}">Регистрация</a></li>
+                        {% endif %}
+                            <li><a href="#" class="text-white">Like on Facebook</a></li>
+                            <li><a href="#" class="text-white">Email me</a></li>
                     </ul>
                 </div>
             </div>
