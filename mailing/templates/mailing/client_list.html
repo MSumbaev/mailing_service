@@ -1,0 +1,11 @@
+{% extends 'mailing/base.html' %}
+
+{% block content %}
+<a href="{% url 'mailing:client_create' %}" type="button"
+   class="btn btn-lg btn-outline-primary mb-5">Добавить клиента</a>
+<div class="row text-center">
+{% for object in object_list %}
+    {% include 'mailing/includes/inc_client.html' %}
+{% endfor %}
+</div>
+{% endblock %}

@@ -1,0 +1,64 @@
+{% extends 'mailing/base.html' %}
+
+{% block content %}
+
+<a href="{% url 'mailing:mailing_create' %}" type="button"
+   class="btn btn-lg btn-outline-primary mb-5">Создать рассылку</a>
+<div class="row text-center">
+    <div class="col-12">
+        <div class="row">
+            {% for object in object_list %}
+            <div class="col-4">
+                <div class="card">
+                    <div class="card-header">Рассылка #{{ object.pk }}</div>
+                    <div class="card-body">
+                        <table class="table">
+                            <tr>
+                                <td>Дата и время начала рассылки</td>
+                                <td>{{ object.start_time|date:"d.m.y H:i" }}</td>
+                            </tr>
+                            <tr>
+                                <td>Дата и время окончания рассылки</td>
+                                <td>{{ object.end_time|date:"d.m.y H:i" }}</td>
+                            </tr>
+                            <tr>
+                                <td>Период</td>
+                                <td>{{ object.get_period_display }}</td>
+                            </tr>
+                            <tr>
+                                <td>Статус</td>
+                                <td>{{ object.get_status_display }}</td>
+                            </tr>
+                            <tr>
+                                <td>Сообщение</td>
+                                <td>{{ object.message.subject }}</td>
+                            </tr>
+                            <tr>
+                                <td>Клиенты:</td>
+                                <td>{% for client in object.clients.all %}
+                                    {{ client.first_name }} {{ client.last_name }}{% if not forloop.last %}, {% endif %}
+                                    {% endfor %}
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="card-footer">
+                        <a href="{% url 'mailing:mailing_update' object.pk %}" class="btn btn-warning text-white">Изменить</a>
+                        <a href="{% url 'mailing:mailing_delete' object.pk %}" class="btn btn-danger">Удалить</a>
+
+                        {% if object.status == 'started' %}
+                            <a href="{% url 'mailing:toggle_status' object.pk %}" class="btn btn-dark">Отключить</a>
+                        {% elif object.status == 'done' %}
+                            <a href="{% url 'mailing:toggle_status' object.pk %}" class="btn btn-success">Включить</a>
+                        {% else %}
+                            <a href="{% url 'mailing:toggle_status' object.pk %}" class="btn btn-success">Запустить</a>
+                        {% endif %}
+
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

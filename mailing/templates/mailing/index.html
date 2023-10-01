@@ -1,0 +1,35 @@
+{% extends 'mailing/base.html' %}
+
+{% block content%}
+<div class="row">
+    <div class="col-md-4">
+        <div class="card mb-4 box-shadow">
+            <div class="card-header">
+                <h3>Информация о клиенте</h3>
+            </div>
+            <div class="card-body">
+                <table class="pr-2">
+                    <tr>
+                        <td>Почта:</td>
+                        <td>{{ object.email }}</td>
+                    </tr>
+                    <tr>
+                        <td>Имя:</td>
+                        <td>{{ object.first_name }}</td>
+                    </tr>
+                    <tr>
+                        <td>Фамилия:</td>
+                        <td>{{ object.last_name }}</td>
+                    </tr>
+                </table>
+                <p></p>
+                <p class="card-text">{{ object.comment|truncatechars:100 }}</p>
+            </div>
+            <div class="card-footer">
+                <button type="button" class="btn btn-sm btn-outline-secondary">Изменить</button>
+                <button type="button" class="btn btn-sm btn-outline-secondary">Удалить</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
