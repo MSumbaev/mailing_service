@@ -55,26 +55,15 @@ class MailingSettings(models.Model):
     period = models.CharField(max_length=20, choices=PERIODS, default=DAILY, verbose_name='Период')
     status = models.CharField(max_length=20, choices=STATUS, default=CREATED, verbose_name='Статус')
 
+    clients = models.ManyToManyField(Client, verbose_name='Клиенты')
     message = models.ForeignKey(MailingMessage, on_delete=models.CASCADE, verbose_name='Сообщение', **NULLABLE)
 
     def __str__(self):
         return f'{self.start_time} - {self.end_time} / {self.period} / {self.status}'
 
     class Meta:
-        verbose_name = 'Настройка'
-        verbose_name_plural = 'Настройки'
-
-
-class MailingClient(models.Model):
-    client = models.ForeignKey(Client, on_delete=models.CASCADE, verbose_name='Клиент')
-    settings = models.ForeignKey(MailingSettings, on_delete=models.CASCADE, verbose_name='Настройка')
-
-    def __str__(self):
-        return f'{self.client} / {self.settings}'
-
-    class Meta:
-        verbose_name = 'Клиент рассылки'
-        verbose_name_plural = 'Клиенты рассылки'
+        verbose_name = 'Рассылка'
+        verbose_name_plural = 'Рассылки'
 
 
 class MailingLog(models.Model):
