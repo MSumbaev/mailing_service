@@ -1,8 +1,12 @@
 {% extends 'mailing/base.html' %}
 
 {% block content %}
-<a href="{% url 'mailing:client_create' %}" type="button"
-   class="btn btn-lg btn-outline-primary mb-5">Добавить клиента</a>
+
+{% if not user.is_stuff %}
+    <a href="{% url 'mailing:client_create' %}" type="button"
+       class="btn btn-lg btn-outline-primary mb-5">Добавить клиента</a>
+{% endif %}
+
 <div class="row text-center">
 {% for object in object_list %}
     {% include 'mailing/includes/inc_client.html' %}

@@ -22,8 +22,10 @@
             <p class="card-text">{{ object.comment|truncatechars:100 }}</p>
         </div>
         <div class="card-footer">
-            <a href="{% url 'mailing:client_update' object.pk %}" class="btn btn-warning text-white">Изменить</a>
-            <a href="{% url 'mailing:client_delete' object.pk %}" class="btn btn-danger">Удалить</a>
+            {% if not user.is_stuff %}
+                <a href="{% url 'mailing:client_update' object.pk %}" class="btn btn-warning text-white">Изменить</a>
+                <a href="{% url 'mailing:client_delete' object.pk %}" class="btn btn-danger">Удалить</a>
+            {% endif %}
         </div>
     </div>
 </div>
