@@ -1,3 +1,5 @@
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
@@ -10,6 +12,7 @@ def index(request):
     return render(request, 'mailing/index.html')
 
 
+@login_required
 def toggle_status(request, pk):
     """Контроллер для смены статуса рассылки"""
     mailing = MailingSettings.objects.get(pk=pk)
@@ -24,75 +27,75 @@ def toggle_status(request, pk):
 
 
 # ----------Клиенты----------
-class ClientListView(ListView):
+class ClientListView(LoginRequiredMixin, ListView):
     model = Client
     extra_context = {
         'title': 'Клиенты'
     }
 
 
-class ClientCreateView(CreateView):
+class ClientCreateView(LoginRequiredMixin, CreateView):
     model = Client
     form_class = ClientForm
     success_url = reverse_lazy('mailing:client_list')
 
 
-class ClientUpdateView(UpdateView):
+class ClientUpdateView(LoginRequiredMixin, UpdateView):
     model = Client
     form_class = ClientForm
     success_url = reverse_lazy('mailing:client_list')
 
 
-class ClientDeleteView(DeleteView):
+class ClientDeleteView(LoginRequiredMixin, DeleteView):
     model = Client
     success_url = reverse_lazy('mailing:client_list')
 
 
 # ----------Сообщения----------
-class MessageListView(ListView):
+class MessageListView(LoginRequiredMixin, ListView):
     model = MailingMessage
     extra_context = {
         'title': 'Список сообщений'
     }
 
 
-class MessageCreateView(CreateView):
+class MessageCreateView(LoginRequiredMixin, CreateView):
     model = MailingMessage
     form_class = MessageForm
     success_url = reverse_lazy('mailing:message_list')
 
 
-class MessageUpdateView(UpdateView):
+class MessageUpdateView(LoginRequiredMixin, UpdateView):
     model = MailingMessage
     form_class = MessageForm
     success_url = reverse_lazy('mailing:message_list')
 
 
-class MessageDeleteView(DeleteView):
+class MessageDeleteView(LoginRequiredMixin, DeleteView):
     model = MailingMessage
     success_url = reverse_lazy('mailing:message_list')
 
 
 # ----------Рассылки----------
-class MailingSettingsListView(ListView):
+class MailingSettingsListView(LoginRequiredMixin, ListView):
     model = MailingSettings
     extra_context = {
         'title': 'Список рассылок'
     }
 
 
-class MailingSettingsCreateView(CreateView):
+class MailingSettingsCreateView(LoginRequiredMixin, CreateView):
     model = MailingSettings
     form_class = MailingSettingsForm
     success_url = reverse_lazy('mailing:mailing_list')
 
 
-class MailingSettingsUpdateView(UpdateView):
+class MailingSettingsUpdateView(LoginRequiredMixin, UpdateView):
     model = MailingSettings
     form_class = MailingSettingsForm
     success_url = reverse_lazy('mailing:mailing_list')
 
 
-class MailingSettingsDeleteView(DeleteView):
+class MailingSettingsDeleteView(LoginRequiredMixin, DeleteView):
     model = MailingSettings
     success_url = reverse_lazy('mailing:mailing_list')
