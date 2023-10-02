@@ -1,4 +1,4 @@
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import Http404
 from django.shortcuts import render, redirect
@@ -34,6 +34,7 @@ def index(request):
 
 
 @login_required
+@permission_required('mailing_list.set_status')
 def toggle_status(request, pk):
     """Контроллер для смены статуса рассылки"""
     mailing = MailingSettings.objects.get(pk=pk)
