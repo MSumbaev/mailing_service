@@ -13,7 +13,7 @@ class GetObjectOwnerMixin:
     def get_object(self, queryset=None):
         self.object = super().get_object(queryset)
 
-        if self.object.owner != self.request.user:
+        if self.object.owner != self.request.user and not self.request.user.is_superuser:
             raise Http404
 
         return self.object
@@ -24,7 +24,7 @@ class GetQuerysetOwnerMixin:
         queryset = super().get_queryset()
 
         if not self.request.user.is_staff or not self.request.user.is_superuser:
-            queryset.filter(owner=self.request.user)
+            queryset = queryset.filter(owner=self.request.user)
 
         return queryset
 
