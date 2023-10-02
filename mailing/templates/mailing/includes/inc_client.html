@@ -1,7 +1,7 @@
 <div class="col-md-4">
     <div class="card mb-4 box-shadow">
         <div class="card-header">
-            <h3>Клиент #{{ object.pk }}</h3>
+            <h5>Клиент: {{ object.email }}</h5>
         </div>
         <div class="card-body">
             <table class="pr-2">
@@ -22,7 +22,7 @@
             <p class="card-text">{{ object.comment|truncatechars:100 }}</p>
         </div>
         <div class="card-footer">
-            {% if not user.is_stuff %}
+            {% if not user.is_staff %}
                 <a href="{% url 'mailing:client_update' object.pk %}" class="btn btn-warning text-white">Изменить</a>
                 <a href="{% url 'mailing:client_delete' object.pk %}" class="btn btn-danger">Удалить</a>
             {% endif %}

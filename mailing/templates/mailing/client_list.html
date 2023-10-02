@@ -2,7 +2,7 @@
 
 {% block content %}
 
-{% if not user.is_stuff %}
+{% if not user.is_staff %}
     <a href="{% url 'mailing:client_create' %}" type="button"
        class="btn btn-lg btn-outline-primary mb-5">Добавить клиента</a>
 {% endif %}
