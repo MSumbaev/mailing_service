@@ -73,6 +73,10 @@ class MailingSettings(models.Model):
         verbose_name = 'Рассылка'
         verbose_name_plural = 'Рассылки'
 
+        permissions = [
+            ('set_status', 'Can change status of mailing')
+        ]
+
 
 class MailingLog(models.Model):
     STATUS_OK = 'ok'
