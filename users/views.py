@@ -98,6 +98,9 @@ class UserListView(UserPassesTestMixin, ListView):
         user = self.request.user
         return user.is_superuser or user.is_staff
 
+    def get_queryset(self):
+        return super().get_queryset().filter(is_staff=False)
+
 
 @user_passes_test(lambda u: u.is_staff or u.is_superuser)
 def switch_status(request, pk):
