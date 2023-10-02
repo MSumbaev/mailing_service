@@ -1,11 +1,32 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.http import Http404
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 
 from mailing.forms import ClientForm, MessageForm, MailingSettingsForm
 from mailing.models import Client, MailingMessage, MailingSettings
+
+
+class GetObjectOwnerMixin:
+    def get_object(self, queryset=None):
+        self.object = super().get_object(queryset)
+
+        if self.object.owner != self.request.user:
+            raise Http404
+
+        return self.object
+
+
+class GetQuerysetOwnerMixin:
+    def get_queryset(self):
+        queryset = super().get_queryset()
+
+        if not self.request.user.is_staff or not self.request.user.is_superuser:
+            queryset.filter(owner=self.request.user)
+
+        return queryset
 
 
 def index(request):
@@ -27,7 +48,7 @@ def toggle_status(request, pk):
 
 
 # ----------Клиенты----------
-class ClientListView(LoginRequiredMixin, ListView):
+class ClientListView(LoginRequiredMixin, GetQuerysetOwnerMixin,  ListView):
     model = Client
     extra_context = {
         'title': 'Клиенты'
@@ -40,19 +61,19 @@ class ClientCreateView(LoginRequiredMixin, CreateView):
     success_url = reverse_lazy('mailing:client_list')
 
 
-class ClientUpdateView(LoginRequiredMixin, UpdateView):
+class ClientUpdateView(LoginRequiredMixin, GetObjectOwnerMixin, UpdateView):
     model = Client
     form_class = ClientForm
     success_url = reverse_lazy('mailing:client_list')
 
 
-class ClientDeleteView(LoginRequiredMixin, DeleteView):
+class ClientDeleteView(LoginRequiredMixin, GetObjectOwnerMixin, DeleteView):
     model = Client
     success_url = reverse_lazy('mailing:client_list')
 
 
 # ----------Сообщения----------
-class MessageListView(LoginRequiredMixin, ListView):
+class MessageListView(LoginRequiredMixin, GetQuerysetOwnerMixin, ListView):
     model = MailingMessage
     extra_context = {
         'title': 'Список сообщений'
@@ -65,19 +86,19 @@ class MessageCreateView(LoginRequiredMixin, CreateView):
     success_url = reverse_lazy('mailing:message_list')
 
 
-class MessageUpdateView(LoginRequiredMixin, UpdateView):
+class MessageUpdateView(LoginRequiredMixin, GetObjectOwnerMixin, UpdateView):
     model = MailingMessage
     form_class = MessageForm
     success_url = reverse_lazy('mailing:message_list')
 
 
-class MessageDeleteView(LoginRequiredMixin, DeleteView):
+class MessageDeleteView(LoginRequiredMixin, GetObjectOwnerMixin, DeleteView):
     model = MailingMessage
     success_url = reverse_lazy('mailing:message_list')
 
 
 # ----------Рассылки----------
-class MailingSettingsListView(LoginRequiredMixin, ListView):
+class MailingSettingsListView(LoginRequiredMixin, GetQuerysetOwnerMixin, ListView):
     model = MailingSettings
     extra_context = {
         'title': 'Список рассылок'
@@ -90,12 +111,12 @@ class MailingSettingsCreateView(LoginRequiredMixin, CreateView):
     success_url = reverse_lazy('mailing:mailing_list')
 
 
-class MailingSettingsUpdateView(LoginRequiredMixin, UpdateView):
+class MailingSettingsUpdateView(LoginRequiredMixin, GetObjectOwnerMixin, UpdateView):
     model = MailingSettings
     form_class = MailingSettingsForm
     success_url = reverse_lazy('mailing:mailing_list')
 
 
-class MailingSettingsDeleteView(LoginRequiredMixin, DeleteView):
+class MailingSettingsDeleteView(LoginRequiredMixin, GetObjectOwnerMixin, DeleteView):
     model = MailingSettings
     success_url = reverse_lazy('mailing:mailing_list')
