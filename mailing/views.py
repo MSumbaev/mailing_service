@@ -23,7 +23,7 @@ class GetQuerysetOwnerMixin:
     def get_queryset(self):
         queryset = super().get_queryset()
 
-        if not self.request.user.is_staff or not self.request.user.is_superuser:
+        if self.request.user.is_staff is False:
             queryset = queryset.filter(owner=self.request.user)
 
         return queryset
