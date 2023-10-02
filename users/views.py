@@ -1,13 +1,15 @@
 import random
 
 from django.conf import settings
+from django.contrib.auth.decorators import user_passes_test
+from django.contrib.auth.mixins import UserPassesTestMixin
 from django.contrib.auth.views import LoginView as BaseLoginView
 from django.contrib.auth.views import LogoutView as BaseLogoutView
 from django.core.mail import send_mail
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy, reverse
-from django.views.generic import CreateView, UpdateView
+from django.views.generic import CreateView, UpdateView, ListView
 
 from users.forms import CreateUserForm, UserForm, LoginUserForm
 from users.models import User
@@ -71,11 +73,10 @@ def user_password_recovery(request):
 
     if request.method == 'POST':
         email = request.POST.get('email')
-        # recovery_new_password(request, email=email)
         for user_ in users_set:
             if user_.email == email:
                 send_mail(
-                    subject='Восстановление пользователя',
+                    subject='SkyChimp: Новый пароль',
                     message=f'Ваш новый пароль:\n'
                             f'{new_password}',
                     from_email=settings.EMAIL_HOST_USER,
@@ -87,18 +88,25 @@ def user_password_recovery(request):
     return render(request, 'users/user_password_recovery.html', context)
 
 
-# def recovery_new_password(request, email):
-#     users_set = User.objects.all()
-#     new_password = ''.join([str(random.randint(0, 9)) for _ in range(15)])
-#
-#     for user_ in users_set:
-#         if user_.email == email:
-#             send_mail(
-#                 subject='Восстановление пользователя',
-#                 message=f'Ваш новый пароль:\n'
-#                         f'{new_password}',
-#                 from_email=settings.EMAIL_HOST_USER,
-#                 recipient_list=[user_.email]
-#             )
-#             user_.set_password(new_password)
-#             user_.save()
+class UserListView(UserPassesTestMixin, ListView):
+    model = User
+    extra_context = {
+        'title': 'Пользователи'
+    }
+
+    def test_func(self):
+        user = self.request.user
+        return user.is_superuser or user.is_staff
+
+
+@user_passes_test(lambda u: u.is_staff or u.is_superuser)
+def switch_status(request, pk):
+    user = User.objects.get(pk=pk)
+
+    if user.is_active:
+        user.is_active = False
+    else:
+        user.is_active = True
+
+    user.save()
+    return redirect(reverse('users:user_list'))
