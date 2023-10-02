@@ -1,0 +1,64 @@
+{% extends 'mailing/base.html' %}
+
+{% block content %}
+<div class="row text-center">
+    <div class="col-12">
+        <div class="row">
+            {% for object in object_list %}
+            <div class="col-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h4>Пользователь: {{ object.email }}</h4>
+                    </div>
+                    <div class="card-body">
+                        <table class="table">
+                            <tr>
+                                <td>Имя:</td>
+                                <td>{{ object.first_name | default:"не указано" }}</td>
+                            </tr>
+                            <tr>
+                                <td>Фамилия:</td>
+                                <td>{{ object.last_name | default:"не указана" }}</td>
+                            </tr>
+                            <tr>
+                                <td>Почта:</td>
+                                <td>{{ object.email }}</td>
+                            </tr>
+                            <tr>
+                                <td>Статус:</td>
+                                <td>
+                                    {% if object.is_active %}
+                                    <text class="text-success">Активен</text>
+                                    {% else %}
+                                    <text class="text-secondary">Неактивен</text>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Телефон:</td>
+                                <td>{{ object.phone | default:"не указан" }}</td>
+                            </tr>
+                            <tr>
+                                <td>Телеграм:</td>
+                                <td>{{ object.telegram  | default:"не указан" }}</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="card-footer">
+                        {% if object.is_active %}
+                            <a href="{% url 'users:switch_status' object.pk %}"
+                               class="btn btn-danger form-control">Заблокировать
+                            пользователя</a>
+                        {% else %}
+                            <a href="{% url 'users:switch_status' object.pk %}"
+                               class="btn btn-success form-control">Разблокировать
+                            пользователя</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}
