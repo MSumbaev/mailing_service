@@ -1,0 +1,43 @@
+{% extends 'mailing/base.html' %}
+
+{% block content %}
+<div class="row text-center">
+    <div class="col-12">
+        <div class="row">
+            {% for object in object_list %}
+            <div class="col-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Лог №{{ object.pk }}</h3>
+                    </div>
+                    <div class="card-body">
+                        <table class="table">
+                            <tr>
+                                <td>Время последний попытки</td>
+                                <td>{{ object.last_try }}</td>
+                            </tr>
+                            <tr>
+                                <td>Статус попытки</td>
+                                <td>{{ object.status }}</td>
+                            </tr>
+                            <tr>
+                                <td>Клиент</td>
+                                <td>{{ object.client }}</td>
+                            </tr>
+                            <tr>
+                                <td>Рассылка</td>
+                                <td>{{ object.settings }}</td>
+                            </tr>
+                            <tr>
+                                <td>Ответ почтового сервера</td>
+                                <td>{{ object.server_response }}</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -33,6 +33,9 @@
                         {% if user.is_staff or user.is_superuser %}
                             <li><a href="{% url 'users:user_list' %}" class="text-white">Список пользователей</a></li>
                         {% endif %}
+                        {% if user.is_staff or user.is_superuser %}
+                            <li><a href="{% url 'mailing:log_list' %}" class="text-white">Логи</a></li>
+                        {% endif %}
                         {% if user.is_authenticated %}
                             <li><a class="text-white" href="{% url 'users:profile' %}">Профиль</a></li>
                             <li><a class="text-danger" href="{% url 'users:logout' %}">Выход</a></li>

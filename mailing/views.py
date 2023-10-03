@@ -1,12 +1,12 @@
 from django.contrib.auth.decorators import login_required, permission_required
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.http import Http404
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 
 from mailing.forms import ClientForm, MessageForm, MailingSettingsForm
-from mailing.models import Client, MailingMessage, MailingSettings
+from mailing.models import Client, MailingMessage, MailingSettings, MailingLog
 
 
 class GetObjectOwnerMixin:
@@ -135,3 +135,11 @@ class MailingSettingsUpdateView(LoginRequiredMixin, GetObjectOwnerMixin, FormVal
 class MailingSettingsDeleteView(LoginRequiredMixin, GetObjectOwnerMixin, DeleteView):
     model = MailingSettings
     success_url = reverse_lazy('mailing:mailing_list')
+
+
+class MailingLogListView(ListView, PermissionRequiredMixin):
+    model = MailingLog
+    permission_required = 'mailing.view_mailinglog'
+    extra_context = {
+        'title': 'Логи'
+    }
