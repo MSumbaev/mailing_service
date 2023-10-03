@@ -11,15 +11,15 @@ class ClientAdmin(admin.ModelAdmin):
 
 @admin.register(MailingMessage)
 class MailingMessageAdmin(admin.ModelAdmin):
-    list_display = ('pk', 'subject', 'message' 'owner')
+    list_display = ('pk', 'subject', 'message',)
     search_fields = ('subject', 'owner')
 
 
 @admin.register(MailingSettings)
 class MailingSettingsAdmin(admin.ModelAdmin):
-    list_display = ('pk', 'message', 'period', 'clients', 'status', 'owner',)
-    list_filter = ('clients', 'status', 'period', 'message', 'owner',)
-    search_fields = ('clients', 'message', 'owner',)
+    list_display = ('pk', 'message', 'period', 'status',)
+    list_filter = ('clients', 'status', 'period', 'message',)
+    search_fields = ('clients', 'message',)
 
 
 @admin.register(MailingLog)
