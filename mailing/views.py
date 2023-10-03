@@ -29,6 +29,12 @@ class GetQuerysetOwnerMixin:
         return queryset
 
 
+class FormValidOwnerMixin:
+    def form_valid(self, form):
+        form.instance.owner = self.request.user
+        return super().form_valid(form)
+
+
 def index(request):
     return render(request, 'mailing/index.html')
 
@@ -49,20 +55,20 @@ def toggle_status(request, pk):
 
 
 # ----------Клиенты----------
-class ClientListView(LoginRequiredMixin, GetQuerysetOwnerMixin,  ListView):
+class ClientListView(LoginRequiredMixin, GetQuerysetOwnerMixin, ListView):
     model = Client
     extra_context = {
         'title': 'Клиенты'
     }
 
 
-class ClientCreateView(LoginRequiredMixin, CreateView):
+class ClientCreateView(LoginRequiredMixin, FormValidOwnerMixin, CreateView):
     model = Client
     form_class = ClientForm
     success_url = reverse_lazy('mailing:client_list')
 
 
-class ClientUpdateView(LoginRequiredMixin, GetObjectOwnerMixin, UpdateView):
+class ClientUpdateView(LoginRequiredMixin, GetObjectOwnerMixin, FormValidOwnerMixin, UpdateView):
     model = Client
     form_class = ClientForm
     success_url = reverse_lazy('mailing:client_list')
@@ -81,13 +87,13 @@ class MessageListView(LoginRequiredMixin, GetQuerysetOwnerMixin, ListView):
     }
 
 
-class MessageCreateView(LoginRequiredMixin, CreateView):
+class MessageCreateView(LoginRequiredMixin, FormValidOwnerMixin, CreateView):
     model = MailingMessage
     form_class = MessageForm
     success_url = reverse_lazy('mailing:message_list')
 
 
-class MessageUpdateView(LoginRequiredMixin, GetObjectOwnerMixin, UpdateView):
+class MessageUpdateView(LoginRequiredMixin, GetObjectOwnerMixin, FormValidOwnerMixin, UpdateView):
     model = MailingMessage
     form_class = MessageForm
     success_url = reverse_lazy('mailing:message_list')
@@ -106,13 +112,21 @@ class MailingSettingsListView(LoginRequiredMixin, GetQuerysetOwnerMixin, ListVie
     }
 
 
-class MailingSettingsCreateView(LoginRequiredMixin, CreateView):
+class MailingSettingsCreateView(LoginRequiredMixin, FormValidOwnerMixin, CreateView):
     model = MailingSettings
     form_class = MailingSettingsForm
     success_url = reverse_lazy('mailing:mailing_list')
 
+    def get_form(self, form_class=None):
+        form = super().get_form(form_class)
 
-class MailingSettingsUpdateView(LoginRequiredMixin, GetObjectOwnerMixin, UpdateView):
+        form.fields['message'].queryset = MailingMessage.objects.filter(owner=self.request.user)
+        form.fields['clients'].queryset = Client.objects.filter(owner=self.request.user)
+
+        return form
+
+
+class MailingSettingsUpdateView(LoginRequiredMixin, GetObjectOwnerMixin, FormValidOwnerMixin, UpdateView):
     model = MailingSettings
     form_class = MailingSettingsForm
     success_url = reverse_lazy('mailing:mailing_list')
