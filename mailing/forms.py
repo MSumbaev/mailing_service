@@ -13,16 +13,16 @@ class StyleFormMixin:
 class ClientForm(StyleFormMixin, forms.ModelForm):
     class Meta:
         model = Client
-        fields = '__all__'
+        exclude = ('owner',)
 
 
 class MessageForm(StyleFormMixin, forms.ModelForm):
     class Meta:
         model = MailingMessage
-        fields = '__all__'
+        exclude = ('owner',)
 
 
 class MailingSettingsForm(StyleFormMixin, forms.ModelForm):
     class Meta:
         model = MailingSettings
-        fields = '__all__'
+        exclude = ('owner',)
