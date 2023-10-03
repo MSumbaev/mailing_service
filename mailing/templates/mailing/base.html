@@ -30,6 +30,7 @@
                         <li><a href="{% url 'mailing:client_list' %}" class="text-white">Клиенты</a></li>
                         <li><a href="{% url 'mailing:message_list' %}" class="text-white">Сообщения</a></li>
                         <li><a href="{% url 'mailing:mailing_list' %}" class="text-white">Рассылки</a></li>
+                        <li><a href="{% url 'blog:blog_list' %}" class="text-white">Блог</a></li>
                         {% if user.is_staff or user.is_superuser %}
                             <li><a href="{% url 'users:user_list' %}" class="text-white">Список пользователей</a></li>
                         {% endif %}

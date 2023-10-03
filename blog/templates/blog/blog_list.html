@@ -1,0 +1,31 @@
+{% extends 'mailing/base.html' %}
+
+{% block content %}
+<div class="row text-center">
+    <div class="col-12">
+        <div class="row">
+            {% for object in object_list %}
+            <div class="col-4">
+                <div class="card" style="width: 18rem;">
+                    <img src="/media/{{ object.image }}" class="card-img-top" alt="...">
+                    <div class="card-header">
+                        <h5 class="card-title">{{ object.title }}</h5>
+                    </div>
+                    <div class="card-body">
+                        <p class="card-text">{{ object.content|truncatechars:100 }}</p>
+                    </div>
+                    <div class="card-footer">
+                        <p class="card-text">{{ object.published_at }}
+                        <p>
+                        <p class="card-text">Просмотры: {{ object.view_count }}
+                        <p>
+                            <a href="{% url 'blog:blog_detail_view' object.pk %}" type="button"
+                               class="btn btn-lg btn-block btn-outline-primary mb-3">Посмотреть</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

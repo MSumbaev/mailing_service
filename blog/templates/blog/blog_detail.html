@@ -1,0 +1,29 @@
+{% extends 'mailing/base.html' %}
+
+{% block content %}
+<a href="{% url 'blog:blog_list' %}" class="btn btn-sm btn-outline-secondary mb-5">Вернуться к статьям</a>
+<div class="col-12">
+    <div class="row">
+        <div class="col-6">
+            <div class="card mb-4 box-shadow">
+                <div class="card-header">
+                    <h3 class="my-0 font-weight-normal">{{object.title}}</h3>
+                </div>
+                <div class="card-body">
+                    <ul class="list-unstyled mt-3 mb-4 text-start m-3">
+                        <li>{{object.content}}</li>
+                    </ul>
+                </div>
+                <div class="card-footer">
+                    <p class="card-text">{{ object.published_at }}<p>
+                    <p class="card-text">Просмотры: {{ object.view_count }}<p>
+                </div>
+            </div>
+        </div>
+        <div class="col-6">
+            <img src="/media/{{ object.image }}" class="img-fluid" alt="Card image cap">
+        </div>
+    </div>
+</div>
+
+{% endblock %}
