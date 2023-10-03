@@ -50,11 +50,13 @@
                                     {% endfor %}
                                 </td>
                             </tr>
+                            {% if user.is_staff or user.is_superuser %}
                             <tr>
                                 <td>Владелец</td>
                                 <td>{{ object.owner }}</td>
                             </tr>
                             <tr>
+                            {% endif %}
                         </table>
                     </div>
                     <div class="card-footer">
@@ -63,12 +65,14 @@
                             <a href="{% url 'mailing:mailing_delete' object.pk %}" class="btn btn-danger">Удалить</a>
                         {% endif %}
 
-                        {% if object.status == 'started' %}
-                            <a href="{% url 'mailing:toggle_status' object.pk %}" class="btn btn-dark">Отключить</a>
-                        {% elif object.status == 'done' %}
-                            <a href="{% url 'mailing:toggle_status' object.pk %}" class="btn btn-success">Включить</a>
-                        {% else %}
-                            <a href="{% url 'mailing:toggle_status' object.pk %}" class="btn btn-success">Запустить</a>
+                        {% if user.is_staff or user.is_superuser %}
+                            {% if object.status == 'started' %}
+                                <a href="{% url 'mailing:toggle_status' object.pk %}" class="btn btn-dark">Отключить</a>
+                            {% elif object.status == 'done' %}
+                                <a href="{% url 'mailing:toggle_status' object.pk %}" class="btn btn-success">Включить</a>
+                            {% else %}
+                                <a href="{% url 'mailing:toggle_status' object.pk %}" class="btn btn-success">Запустить</a>
+                            {% endif %}
                         {% endif %}
 
                     </div>
