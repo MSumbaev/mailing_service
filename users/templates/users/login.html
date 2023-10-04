@@ -12,7 +12,7 @@
                 {% csrf_token %}
                 {{ form.as_p }}
                 <button type="submit" class="btn btn-success">Войти</button>
-                <a href="{% url 'mailing:index' %}" class="btn">Отмена</a>
+                <a href="{% url 'mailing:home' %}" class="btn">Отмена</a>
             </div>
             <div class="card-footer">
                 <a href="{% url 'users:user_password_recovery' %}" class="btn btn-danger">Не помню пароль</a>
