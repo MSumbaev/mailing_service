@@ -1,5 +1,7 @@
+from django.conf import settings
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+from django.core.cache import cache
 from django.http import Http404
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
@@ -45,9 +47,20 @@ class HomeView(TemplateView):
     def get_context_data(self, *args, **kwargs):
         context_data = super().get_context_data(**kwargs)
 
+        if settings.CACHE_ENABLED:
+            blogs_key = 'blogs'
+
+            blogs = cache.get(blogs_key)
+
+            if blogs is None:
+                blogs = Blog.objects.order_by("?")[:3]
+                cache.set(blogs_key, blogs)
+        else:
+            blogs = Blog.objects.order_by("?")[:3]
+
         context_data['mailings_count'] = MailingSettings.objects.all().count()
         context_data['mailings_started'] = MailingSettings.objects.filter(status=MailingSettings.STARTED).count()
-        context_data['blogs'] = Blog.objects.order_by("?")[:3]
+        context_data['blogs'] = blogs
         context_data['title'] = 'SkyChimp - сервис для ваших рассылок'
 
         clients = Client.objects.all()

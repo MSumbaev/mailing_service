@@ -2,3 +2,5 @@ Django
 psycopg2
 django-crontab
 Pillow
+redis
+python-dotenv
