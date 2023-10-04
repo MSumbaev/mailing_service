@@ -3,6 +3,8 @@ from smtplib import SMTPException
 
 from django.core.mail import send_mail
 from django.conf import settings
+from django.utils import timezone
+
 from mailing.models import MailingLog, MailingSettings
 
 
@@ -39,7 +41,7 @@ def send_email(mailing_settings, mailing_client):
 
 def send_mails():
     """Функция фильтрации рассылок, с последующей сменой статуса и отправкой сообщения клиенту"""
-    datetime_now = datetime.datetime.now(datetime.timezone.utc)
+    datetime_now = timezone.now()
 
     # получаем список всех созданных и запущенных рассылок
     for mailing_settings in MailingSettings.objects.exclude(status=MailingSettings.DONE):
