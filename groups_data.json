@@ -1,0 +1,30 @@
+[
+  {
+    "model": "auth.group",
+    "pk": 1,
+    "fields": {
+      "name": "manager",
+      "permissions": [
+        24,
+        36,
+        28,
+        41,
+        32,
+        40
+      ]
+    }
+  },
+  {
+    "model": "auth.group",
+    "pk": 2,
+    "fields": {
+      "name": "content-manager",
+      "permissions": [
+        43,
+        44,
+        45,
+        46
+      ]
+    }
+  }
+]

@@ -1,0 +1,69 @@
+[
+  {
+    "model": "users.user",
+    "pk": 3,
+    "fields": {
+      "password": "pbkdf2_sha256$600000$MaZRt3VV2iaNmSCOhUnwce$JnKQo5MDpTVha63ri7SPa7369a3/DKYJdNlaBdk9M4Y=",
+      "last_login": "2023-10-04T20:43:22.801Z",
+      "is_superuser": true,
+      "first_name": "Admin",
+      "last_name": "Admin",
+      "is_staff": true,
+      "is_active": true,
+      "date_joined": "2023-10-02T19:06:38.584Z",
+      "email": "Admin@skychimp.com",
+      "phone": null,
+      "avatar": "",
+      "telegram": null,
+      "verify_key": null,
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "users.user",
+    "pk": 8,
+    "fields": {
+      "password": "pbkdf2_sha256$600000$mOGQHLDcwMBrjzlm6uQnbZ$0gBVQFsZee3KdQ4tOgp0M/65E5+wEemdM+fAM/A7WL4=",
+      "last_login": "2023-10-04T20:40:59.960Z",
+      "is_superuser": false,
+      "first_name": "manager",
+      "last_name": "manager",
+      "is_staff": true,
+      "is_active": true,
+      "date_joined": "2023-10-04T20:39:13Z",
+      "email": "manager@skychimp.com",
+      "phone": null,
+      "avatar": "",
+      "telegram": null,
+      "verify_key": null,
+      "groups": [
+        1
+      ],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "users.user",
+    "pk": 9,
+    "fields": {
+      "password": "pbkdf2_sha256$600000$gBP2XNbZWFvhhFtXtwTlSU$WgEQ5xqohkFVzdp2lXOF+BobhcOb/K3ISVFfY5OnxHw=",
+      "last_login": "2023-10-04T20:43:53.053Z",
+      "is_superuser": false,
+      "first_name": "c_manager",
+      "last_name": "c_manager",
+      "is_staff": true,
+      "is_active": true,
+      "date_joined": "2023-10-04T20:42:46Z",
+      "email": "c_manager@skychimp.com",
+      "phone": null,
+      "avatar": "",
+      "telegram": null,
+      "verify_key": null,
+      "groups": [
+        2
+      ],
+      "user_permissions": []
+    }
+  }
+]

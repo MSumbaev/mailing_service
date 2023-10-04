@@ -1,0 +1,46 @@
+[
+  {
+    "model": "blog.blog",
+    "pk": 1,
+    "fields": {
+      "title": "Блог 1",
+      "content": "Текст 1",
+      "image": "blog/blog1.jpeg",
+      "view_count": 3,
+      "published_at": "2023-10-03"
+    }
+  },
+  {
+    "model": "blog.blog",
+    "pk": 2,
+    "fields": {
+      "title": "Блог 2",
+      "content": "Текст блога 2",
+      "image": "blog/blog2.jpeg",
+      "view_count": 5,
+      "published_at": "2023-10-03"
+    }
+  },
+  {
+    "model": "blog.blog",
+    "pk": 3,
+    "fields": {
+      "title": "блог 3",
+      "content": "Blogs_3 content",
+      "image": "blog/blog3.png",
+      "view_count": 3,
+      "published_at": "2023-10-03"
+    }
+  },
+  {
+    "model": "blog.blog",
+    "pk": 4,
+    "fields": {
+      "title": "Блог о рассылках",
+      "content": "рассылки это прекрасно",
+      "image": "blog/blog4.png",
+      "view_count": 15,
+      "published_at": "2023-10-03"
+    }
+  }
+]
