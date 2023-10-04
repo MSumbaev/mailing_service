@@ -3,8 +3,9 @@ from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMix
 from django.http import Http404
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
-from django.views.generic import ListView, CreateView, UpdateView, DeleteView
+from django.views.generic import ListView, CreateView, UpdateView, DeleteView, TemplateView
 
+from blog.models import Blog
 from mailing.forms import ClientForm, MessageForm, MailingSettingsForm
 from mailing.models import Client, MailingMessage, MailingSettings, MailingLog
 
@@ -35,8 +36,40 @@ class FormValidOwnerMixin:
         return super().form_valid(form)
 
 
-def index(request):
-    return render(request, 'mailing/index.html')
+# def index(request):
+#     return render(request, 'mailing/home.html')
+
+class HomeView(TemplateView):
+    template_name = 'mailing/home.html'
+
+    def get_context_data(self, *args, **kwargs):
+        context_data = super().get_context_data(**kwargs)
+
+        context_data['mailings_count'] = MailingSettings.objects.all().count()
+        context_data['mailings_started'] = MailingSettings.objects.filter(status=MailingSettings.STARTED).count()
+        context_data['blogs'] = Blog.objects.order_by("?")[:3]
+        context_data['title'] = 'SkyChimp - сервис для ваших рассылок'
+
+        clients = Client.objects.all()
+        clients_email = []
+
+        for client in clients:
+            clients_email.append(client.email)
+
+        uniq_clients = len(set(clients_email))
+
+        context_data['uniq_clients'] = uniq_clients
+
+        # for object in context_data['object_list']:
+        #     active_version = object.version_set.filter(current_version=True).first()
+        #     if active_version:
+        #         object.active_version_number = active_version.version_number
+        #         object.active_version_title = active_version.version_title
+        #     else:
+        #         object.active_version_number = None
+        #         object.active_version_title = None
+        #
+        return context_data
 
 
 @login_required
