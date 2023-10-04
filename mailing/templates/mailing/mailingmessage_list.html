@@ -14,15 +14,10 @@
             <div class="col-4">
                 <div class="card">
                     <div class="card-header">
-                        <h3>Сообщение №{{ object.pk }}</h3>
+                        <h4>{{ object.subject }}</h4>
                     </div>
                     <div class="card-body">
-                        <table class="table">
-                            <tr>
-                                <td>Тема</td>
-                                <td>{{ object.subject }}</td>
-                            </tr>
-                        </table>
+                       <p class="card-text">{{ object.message|truncatechars:100 }}</p>
                     </div>
                     <div class="card-footer">
                         {% if not user.is_staff %}
